@@ -6,3 +6,4 @@ const text = 'This is a very good news, everyone!';
 
 console.log(findBandName(text)); // should log [ 'Very Good News' ]
 global.punctuateList = punctuateList;
+global.MuteController = require('./lib/muteController');

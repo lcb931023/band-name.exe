@@ -1,4 +1,5 @@
 var Botkit = require('botkit');
+var winston = require('winston');
 var findBandName = require('./lib/findBandName');
 var MuteController = require('./lib/muteController');
 var punctuateList = require('./lib/punctuateList');
@@ -10,7 +11,16 @@ if (!process.env.SLACK_BOT_TOKEN) {
 }
 
 var controller = Botkit.slackbot({
- debug: false
+  logger: new winston.Logger({
+    levels: winston.config.syslog.levels,
+    transports: [
+      new (winston.transports.Console)(),
+      new (winston.transports.File)({
+        filename: './logs/band-name.exe.log',
+        maxsize: 1024*1024, // rotate at 1mb
+      }),
+    ],
+  }),
 });
 
 controller.spawn({
